@@ -19,9 +19,8 @@ Report bugs at https://github.com/xie-dongping/modelicaparser/issues.
 
 If you are reporting a bug, please include:
 
-* Your operating system name and version.
-* Any details about your local setup that might be helpful in troubleshooting.
-* Detailed steps to reproduce the bug.
+* Your Python version and the result of a `pip list`
+* Detailed steps to reproduce the bug, ideally a test case.
 
 Fix Bugs
 ~~~~~~~~
@@ -101,7 +100,7 @@ Before you submit a pull request, check that it meets these guidelines:
 2. If the pull request adds functionality, the docs should be updated. Put
    your new functionality into a function with a docstring, and add the
    feature to the list in README.rst.
-3. The pull request should work for Python 2.6, 2.7, 3.3, 3.4 and 3.5, and for PyPy. Check
+3. The pull request should work for Python 2.7, 3.3, 3.4 and 3.5, and for PyPy. Check
    https://travis-ci.org/xie-dongping/modelicaparser/pull_requests
    and make sure that the tests pass for all supported Python versions.
 
