@@ -1,13 +1,21 @@
 # -*- coding: utf-8 -*-
 
-from funcparserlib.lexer import Token
-from funcparserlib.parser import (some, a, many, skip, finished, maybe,
-                                  with_forward_decls, Parser)
+from funcparserlib.parser import maybe, Parser
 
-from syntax import keyword, op, token_type
-from modification import class_modification
+from syntax import keyword
+from expression import annotation, name
 
 
-name = (op(".", maybe) + token_type("ident") +
-        maybe(many(op(".") + token_type("ident"))))
+@Parser
+def extends_clause(tokens, state):
+    from modification import class_modification
+    parser = (keyword('extends') + name + maybe(class_modification)
+              + maybe(annotation))
+    return parser.run(tokens, state)
 
+
+@Parser
+def constraining_clause(tokens, state):
+    from modification import class_modification
+    parser = keyword('constrainedby') + name + maybe(class_modification)
+    return parser.run(tokens, state)
