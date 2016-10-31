@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
 from funcparserlib.parser import (many, maybe, Parser)
-from syntax import keyword, op, token_type
+from .syntax import keyword, op, token_type
 
-from expressions import name, comment, expression, array_subscript
+from .expressions import name, comment, expression, array_subscript
 
 kw = keyword
 
@@ -18,7 +18,7 @@ condition_attribute = keyword('if') + expression
 
 @Parser
 def declaration(tokens, state):
-    from modification import modification
+    from .modification import modification
     parser = (token_type('ident') + maybe(array_subscript)
               + maybe(modification))
     return parser.run(tokens, state)

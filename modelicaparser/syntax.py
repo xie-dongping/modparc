@@ -7,7 +7,8 @@ import funcparserlib.lexer
 from re import MULTILINE
 import pprint
 
-import specification
+from .specification import KEYWORDS
+
 
 def token_type(type):
     return some(lambda tok: tok.type == type)
@@ -39,7 +40,7 @@ def tokenize(string):
         ('comment', (r'//.*',)),
         ('newline', (r'[\r\n]+',)),
         ('whitespace', (r'[ \t\r\n]+',)),
-        ('keyword', (r'(' + '|'.join(specification.KEYWORDS) + r')',)),
+        ('keyword', (r'(' + '|'.join(KEYWORDS) + r')',)),
         ('ident', (r'[a-zA-Z_][a-zA-Z_0-9]*',)),
         ('number', (r'\d+(\.\d+)?([eE]\d+)?',)),
         ('op', (r'(<>|<=|>=|==)',)),

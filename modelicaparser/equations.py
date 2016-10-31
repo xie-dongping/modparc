@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
 from funcparserlib.parser import many, maybe, Parser
-from syntax import keyword, op, token_type
+from .syntax import keyword, op, token_type
 
-from expressions import (expression, simple_expression, name, comment,
+from .expressions import (expression, simple_expression, name, comment,
                          function_call_args, component_reference,
                          output_expression_list)
 
