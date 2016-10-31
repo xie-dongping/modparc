@@ -1,0 +1,14 @@
+digraph component_clause {
+    "component_clause" -> "type_prefix"
+    "component_clause" -> "type_specifier"
+    "component_clause" -> "array_subscripts"
+    "component_clause" -> "component_list"
+    "type_specifier" -> "name"
+    "component_list" -> "component_declaration"
+    "component_declaration" -> "declaration"
+    "component_declaration" -> "comment"
+    "component_declaration" -> "condition_attribute"
+    "condition_attribute" -> "expression"
+    "declaration" -> "array_subscripts"
+    "declaration" -> "modification"
+}

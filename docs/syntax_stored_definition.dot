@@ -1,0 +1,4 @@
+digraph stored_definition {
+    "stored_definition" -> "name"
+    "stored_definition" -> "class_definition"
+}
