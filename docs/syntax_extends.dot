@@ -1,0 +1,7 @@
+digraph extends {
+    "extends_clause" -> "name" 
+    "extends_clause" -> "class_modification" 
+    "extends_clause" -> "annotation"
+    "constraining_clause" -> "name" 
+    "constraining_clause" -> "class_modification" 
+}

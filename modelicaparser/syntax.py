@@ -1,45 +1,53 @@
 # -*- coding: utf-8 -*-
 
-import funcparserlib
+from funcparserlib.lexer import Token
+from funcparserlib.parser import (some, a, many, skip, finished, maybe,
+                                  with_forward_decls)
 import funcparserlib.lexer
 from re import MULTILINE
 import pprint
 
+import specification
+
+def token_type(type):
+    return some(lambda tok: tok.type == type)
+
+
+def language_element(key, type, combinator=a):
+    if combinator == a:
+        return combinator(Token(type, key))
+    elif combinator == some:
+        return combinator(lambda tok: tok == Token(type, key))
+    elif combinator == maybe:
+        return combinator(a(Token(type, key)))
+    else:
+        raise Exception("Parse error")
+
+def keyword(key, combinator=a):
+    return language_element(key, type='keyword', combinator=combinator)
+
+def op(key, combinator=a):
+    return language_element(key, type='op', combinator=combinator)
+
 def tokenize(string):
     token_specs = [
         ('string', (r'"([^\\"]|\\.|[\r\n])*?"', MULTILINE)),
-        ('q-ident', (r"'" + r'([a-zA-Z_0-9' +
-                     r'!#%&()*+,\-\./:;<>=?@\[\]\^{}|~ ' +
-                     r'\"\?\\\a\b\f\n\r\t\v]|\\.)*' + r"'",)),
+        ('ident', (r"'" + r'([a-zA-Z_0-9' +
+                   r'!#%&()*+,\-\./:;<>=?@\[\]\^{}|~ ' +
+                   r'\"\?\\\a\b\f\n\r\t\v]|[^\\"]|\\.)*' + r"'",)),
         ('comment', (r'/\*(.|[\r\n])*?\*/', MULTILINE)),
         ('comment', (r'//.*',)),
         ('newline', (r'[\r\n]+',)),
         ('whitespace', (r'[ \t\r\n]+',)),
-        ('keyword', (r'('
-                     r'algorithm|' + r'and|' + r'annotation|' + r'assert|'
-                     r'block|' + r'break|' + r'class|' + r'connect|'
-                     r'connector|' + r'constant|' + r'constrainedby|' +
-                     r'der|' + r'discrete|' + r'each|' + r'else|' +
-                     r'elseif|' + r'elsewhen|' + r'encapsulated|' +
-                     r'end|' + r'enumeration|' + r'equation|'
-                     r'expandable|' + r'extends|' + r'external|'
-                     r'false|' + r'final|' + r'flow|' + r'for|' +
-                     r'function|' + r'if|' + r'import|' + r'impure|' + r'in|'
-                     + r'initial|' + r'inner|' + r'input|' + r'loop|'
-                     r'model|' + r'not|' + r'operator|' + r'or|' + r'outer|' +
-                     r'output|' + r'package|' + r'parameter|' + r'partial|' +
-                     r'protected|' + r'public|' + r'pure|' + r'record|' +
-                     r'redeclare|' + r'replaceable|' + r'return|' +
-                     r'stream|' + r'then|' + r'true|' + r'type|' + r'when|'
-                     r'while|' + r'within' + r')',)),
+        ('keyword', (r'(' + '|'.join(specification.KEYWORDS) + r')',)),
         ('ident', (r'[a-zA-Z_][a-zA-Z_0-9]*',)),
         ('number', (r'[+-]?\d+(\.\d+)?([eE]\d+)?',)),
-        ('rel_op', (r'(<>|<=|>=|==)',)),
-        ('rel_op', (r'[<>]',)),
-        ('add_op', (r'(\.\+|\.-)',)),
-        ('add_op', (r'[+\-]',)),
-        ('mul_op', (r'(\.\*|\./)',)),
-        ('mul_op', (r'[*/]',)),
+        ('op', (r'(<>|<=|>=|==)',)),
+        ('op', (r'[<>]',)),
+        ('op', (r'(\.\+|\.-)',)),
+        ('op', (r'[+\-]',)),
+        ('op', (r'(\.\*|\./)',)),
+        ('op', (r'[*/]',)),
         ('op', (r'[\[\]\.(){}\^+\-*/=\,;:]',)),
     ]
     inner_tokenize = funcparserlib.lexer.make_tokenizer(token_specs)
