@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 
 from funcparserlib.parser import many, maybe, Parser
-from syntax import keyword, op, token_type
 
-from expressions import (name, expression, string_comment,
-                         array_subscript, comment)
-from class_definition import class_prefix, enum_list, base_prefix
-from component_clause import declaration, type_specifier, type_prefix
-from extends import constraining_clause
+from .syntax import keyword, op, token_type
+
+from .expressions import (name, expression, string_comment,
+                          array_subscript, comment)
+from .component_clause import declaration, type_specifier, type_prefix
+from .extends import constraining_clause
 
 
 @Parser
@@ -20,7 +20,9 @@ def modification(tokens, state):
 
 @Parser
 def short_class_definition(tokens, state):
-    parser = (class_prefix + token_type("ident") + op("=")
+    # circular import!
+    from .class_definition import class_prefixes, enum_list, base_prefix  
+    parser = (class_prefixes + token_type("ident") + op("=")
               + (base_prefix + name + maybe(array_subscript)
                  + maybe(class_modification) + comment
                  | keyword('enumeration') + op('(') +

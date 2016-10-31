@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
 
 from funcparserlib.parser import many, maybe, Parser
-from syntax import keyword, op, token_type
 
-from .expressions import (name, comment, language_specification,
-                         annotation, string_comment, component_reference,
-                         array_subscript, expression_list)
+from .syntax import keyword, op, token_type
+
+from .expressions import (name, comment, annotation, string_comment, 
+                          component_reference, array_subscript, 
+                          expression_list)
 from .component_clause import type_prefix, component_clause
 from .extends import extends_clause, constraining_clause
-from .equation import equation_section, algorithm_section
+from .equations import equation_section, algorithm_section
 from .modification import class_modification
 
 
@@ -24,6 +25,8 @@ class Statement(object):
 
 class ClassPrefix(Statement):
     pass
+
+language_specification = token_type('string')
 
 base_prefix = type_prefix
 
@@ -74,7 +77,7 @@ def class_specifier(tokens, state):
     enum_def = (token_type('ident') + op("=") + keyword('enumeration')
                 + op("(") + (maybe(enum_list) | op(":")) + op(")") + comment)
     derivative = (token_type('ident') + op("=") + keyword('der')
-                  + op("(") + + name + op(",") + token_type('ident')
+                  + op("(") + name + op(",") + token_type('ident')
                   + maybe(many(op(",") + token_type('ident')))
                   + op(")") + comment)
     extended = (keyword('extends') + token_type('ident') +
@@ -107,7 +110,6 @@ enumeration_literal = token_type("ident") + comment
 enum_list = enumeration_literal + maybe(many(op(",") +
                                         enumeration_literal))
 
-language_specification = token_type('string')
 
 
 import_list = (token_type("ident") + maybe(many(op(",") +

@@ -3,7 +3,7 @@
 from funcparserlib.parser import many, maybe, Parser
 import pprint
 
-from syntax import keyword, op, token_type
+from .syntax import keyword, op, token_type
 
 
 class Expression(object):
@@ -12,7 +12,7 @@ class Expression(object):
         self.value = value
 
     def __repr__(self):
-        _repr = "{0}: \n{1}".format(super().__repr__(),
+        _repr = "{0}: \n{1}".format(super(Expression, self).__repr__(),
                                     pprint.pformat(self.value,
                                                    indent=2))
         return _repr
@@ -94,7 +94,7 @@ def function_argument(tokens, state):
 
 @Parser
 def function_arguments(tokens, state):
-    from equations import for_indices  # circular dependency
+    from .equations import for_indices  # circular dependency
     parser = (function_argument +
               maybe(op(",") + function_arguments
                     | keyword('for') + for_indices)
@@ -125,7 +125,7 @@ string_comment = maybe(token_type("string") +
 
 @Parser
 def annotation(tokens, state):
-    from modification import class_modification  # circular dependency
+    from .modification import class_modification  # circular dependency
     parser = keyword('annotation') + class_modification
     return parser.run(tokens, state)
 
