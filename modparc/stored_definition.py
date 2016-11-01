@@ -8,5 +8,4 @@ from .class_definition import class_definition
 
 stored_definition = (maybe(keyword("within") + maybe(name) + op(";")) +
                      maybe(many(maybe(keyword("final")) +
-                                class_definition + op(";"))) +
-                     finished)
+                                class_definition + op(";"))))
