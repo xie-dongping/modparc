@@ -18,23 +18,23 @@ test_requirements = [
 ]
 
 setup(
-    name='modelicaparser',
+    name='modparc',
     version='0.1.0',
     description="A Modelica parser based on parser generato",
     long_description=readme + '\n\n' + history,
     author="谢东平 Dongping XIE",
     author_email='dongping.xie.tud@gmail.com',
-    url='https://github.com/xie-dongping/modelicaparser',
+    url='https://github.com/xie-dongping/modparc',
     packages=[
-        'modelicaparser',
+        'modparc',
     ],
-    package_dir={'modelicaparser':
-                 'modelicaparser'},
+    package_dir={'modparc':
+                 'modparc'},
     include_package_data=True,
     install_requires=requirements,
     license="GNU General Public License v3",
     zip_safe=False,
-    keywords='modelicaparser',
+    keywords='modparc',
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
         'Intended Audience :: Developers',

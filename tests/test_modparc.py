@@ -2,16 +2,16 @@
 # -*- coding: utf-8 -*-
 
 """
-test_modelicaparser
+test_modparc
 ----------------------------------
 
-Tests for `modelicaparser` module.
+Tests for `modparc` module.
 """
 
 import pytest
 
 
-from modelicaparser import modelicaparser
+from modparc import expressions
 
 
 @pytest.fixture
