@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from funcparserlib.lexer import Token
-from funcparserlib.parser import (some, a, many, skip, finished, maybe,
-                                  with_forward_decls)
+from funcparserlib.parser import some, a, maybe
 import funcparserlib.lexer
 from re import MULTILINE
 import pprint
@@ -10,25 +9,32 @@ import pprint
 from .specification import KEYWORDS
 
 
-def token_type(type):
-    return some(lambda tok: tok.type == type)
+def token_type(tok_type):
+    "Match the token of a certain type"
+    return some(lambda tok: tok.type == tok_type)
 
 
-def language_element(key, type, combinator=a):
+def language_element(key, tok_type, combinator=a):
+    "Type to match language element by using a certain combinator"
     if combinator == a:
-        return combinator(Token(type, key))
+        return combinator(Token(tok_type, key))
     elif combinator == some:
-        return combinator(lambda tok: tok == Token(type, key))
+        return combinator(lambda tok: tok == Token(tok_type, key))
     elif combinator == maybe:
-        return combinator(a(Token(type, key)))
+        return combinator(a(Token(tok_type, key)))
     else:
         raise Exception("Parse error")
 
+
 def keyword(key, combinator=a):
-    return language_element(key, type='keyword', combinator=combinator)
+    "Match the keyword tokens"
+    return language_element(key, tok_type='keyword', combinator=combinator)
+
 
 def op(key, combinator=a):
-    return language_element(key, type='op', combinator=combinator)
+    "Match the operator tokens"
+    return language_element(key, tok_type='op', combinator=combinator)
+
 
 def tokenize(string):
     token_specs = [
@@ -84,12 +90,12 @@ if __name__ == "__main__":
 
     if args.get('root_path') is None:
         MODELICA_PATH = "***REMOVED***/workspace/modelica/"
-        root_path = MODELICA_PATH
+        path = MODELICA_PATH
     else:
-        root_path = args['root_path']
+        path = args['root_path']
 
-    file_list = get_all_models(root_path)
+    file_list = get_all_models(path)
 
-    for file_name in file_list:
-        print("File name is {0}".format(file_name))
-        print_file(file_name, function=tokenize)
+    for f_name in file_list:
+        print("File name is {0}".format(f_name))
+        print_file(f_name, function=tokenize)

@@ -1,44 +1,39 @@
 # -*- coding: utf-8 -*-
+# pylint: disable=missing-docstring
 
 from funcparserlib.parser import many, maybe, Parser
 
 from .syntax import keyword, op, token_type
 
-from .expressions import (name, comment, annotation, string_comment, 
-                          component_reference, array_subscript, 
+from .expressions import (name, comment, annotation, string_comment,
+                          component_reference, array_subscript,
                           expression_list)
 from .component_clause import type_prefix, component_clause
 from .extends import extends_clause, constraining_clause
 from .equations import equation_section, algorithm_section
 from .modification import class_modification
 
+# pylint: disable=no-name-in-module
+from .syntax_elements import (LanguageSpecification, BasePrefix,
+                              ExternalFunctionCall, ClassDefinition, Element,
+                              ElementList, Composition, ClassSpecifier,
+                              ClassPrefixes, EnumerationLiteral, EnumList,
+                              ImportList, ImportClause)
+# pylint: enable=no-name-in-module
 
-class Statement(object):
+language_specification = token_type('string') >> LanguageSpecification
 
-    def __init__(self, tokens):
-        self.tokens = tokens
-        self.text = " ".join([tok.value for tok in tokens])
-
-    def __str__(self):
-            return "{0}({1})".format(self.__class__.__name__, self.text)
-
-
-class ClassPrefix(Statement):
-    pass
-
-language_specification = token_type('string')
-
-base_prefix = type_prefix
+base_prefix = type_prefix >> BasePrefix
 
 external_function_call = (maybe(component_reference + op("=")) +
                           token_type('indent') + op("(") +
-                          maybe(expression_list) + op(")"))
-
+                          maybe(expression_list) + op(")")
+                          >> ExternalFunctionCall )
 
 @Parser
 def class_definition(tokens, state):
     parser = maybe(keyword("encapsulated")) + class_prefixes + class_specifier
-    return parser.run(tokens, state)
+    return (parser >>  ClassDefinition).run(tokens, state)
 
 
 @Parser
@@ -53,9 +48,9 @@ def element(tokens, state):
                k('replaceable') + (class_definition |
                                    component_clause)
                + maybe(constraining_clause + comment)))
-    return parser.run(tokens, state)
+    return (parser >> Element).run(tokens, state)
 
-element_list = maybe(many(element + op(';')))
+element_list = maybe(many(element + op(';'))) >> ElementList
 
 composition = (element_list +
                maybe(many(keyword("public") + element_list |
@@ -65,7 +60,7 @@ composition = (element_list +
                maybe(keyword("external") + maybe(language_specification) +
                      maybe(external_function_call) + maybe(annotation) +
                      op(";")) +
-               maybe(annotation + op(";")))
+               maybe(annotation + op(";")) >> Composition)
 
 
 @Parser
@@ -85,7 +80,7 @@ def class_specifier(tokens, state):
                 keyword("end") + token_type('ident'))
 
     parser = (normal | derived | enum_def | derivative | extended)
-    return parser.run(tokens, state)
+    return (parser >> ClassSpecifier).run(tokens, state)
 
 
 @Parser
@@ -102,21 +97,19 @@ def class_prefixes(tokens, state):
               (km("expandable") + kw("connector")) |
               function_prefix | kw("operator")))
 
-    return parser.run(tokens, state)
+    return (parser >> ClassPrefixes).run(tokens, state)
 
-
-enumeration_literal = token_type("ident") + comment
+enumeration_literal = token_type("ident") + comment >> EnumerationLiteral
 
 enum_list = enumeration_literal + maybe(many(op(",") +
-                                        enumeration_literal))
-
-
+                                        enumeration_literal)) >> EnumList
 
 import_list = (token_type("ident") + maybe(many(op(",") +
-                                           token_type("ident"))))
+                                           token_type("ident")))
+               >> ImportList)
 
 import_clause = (keyword('import') +
                  (token_type("ident") + op('=') + name |
                   name + maybe(op(".") + (op("*") |
                                           op("{") + import_list + op("}")))
-                 + comment))
+                 + comment)) >> ImportClause

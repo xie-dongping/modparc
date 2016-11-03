@@ -1,31 +1,33 @@
 # -*- coding: utf-8 -*-
+# pylint: disable=missing-docstring
 
+# pylint: disable=missing-docstring
+# pylint: disable=no-name-in-module
+# pylint: enable=no-name-in-module
 from funcparserlib.parser import many, maybe, Parser
-import pprint
 
 from .syntax import keyword, op, token_type
 
-
-class Expression(object):
-
-    def __init__(self, value):
-        self.value = value
-
-    def __repr__(self):
-        _repr = "{0}: \n{1}".format(super(Expression, self).__repr__(),
-                                    pprint.pformat(self.value,
-                                                   indent=2))
-        return _repr
-
+# pylint: disable=no-name-in-module
+from .syntax_elements import (Expression, SimpleExpression, LogicalExpression,
+                              LogicalTerm, LogicalFactor, Relation,
+                              ArithmeticExpression, Term, Factor, Primary,
+                              RelOp, MulOp, AddOp, Name, NamedArgument,
+                              NamedArguments, FunctionArgument,
+                              FunctionArguments, FunctionCallArgs,
+                              ExpressionList, OutputExpressionList, Subscript,
+                              ArraySubscript, ComponentReference,
+                              StringComment, Annotation, Comment)
+# pylint: enable=no-name-in-module
 
 name = (op(".", maybe) + token_type("ident") +
-        maybe(many(op(".") + token_type("ident"))))
+        maybe(many(op(".") + token_type("ident"))) >> Name)
 
-rel_op = op("<") | op("<=") | op(">") | op(">=") | op("==") | op("<>")
+rel_op = op("<") | op("<=") | op(">") | op(">=") | op("==") | op("<>") >> RelOp
 
-add_op = op("+") | op("-") | op(".+") | op(".-")
+add_op = op("+") | op("-") | op(".+") | op(".-") >> AddOp
 
-mul_op = op("*") | op("/") | op(".*") | op("./")
+mul_op = op("*") | op("/") | op(".*") | op("./") >> MulOp
 
 
 @Parser
@@ -43,26 +45,30 @@ def primary(tokens, state):
               | op("{") + function_arguments + op("}")
               | kw("end"))
 
-    return parser.run(tokens, state)
+    return (parser >> Primary).run(tokens, state)
 
+factor = primary + maybe((op("^") | op(".^")) + primary) >> Factor
 
-factor = primary + maybe((op("^") | op(".^")) + primary)
+term = factor + maybe(many(mul_op + factor)) >> Term
 
-term = factor + maybe(many(mul_op + factor))
+arithmetic_expression = (maybe(add_op) + term + maybe(many(add_op + term))
+                         >> ArithmeticExpression)
 
-arithmetic_expression = maybe(add_op) + term + maybe(many(add_op + term))
+relation = (arithmetic_expression + maybe(rel_op + arithmetic_expression)
+            >> Relation)
 
-relation = arithmetic_expression + maybe(rel_op + arithmetic_expression)
+logical_factor = maybe(keyword("not")) + relation >> LogicalFactor
 
-logical_factor = maybe(keyword("not")) + relation
+logical_term = (logical_factor + maybe(many(keyword("and") + logical_factor))
+                >> LogicalTerm)
 
-logical_term = logical_factor + maybe(many(keyword("and") + logical_factor))
+logical_expression = (logical_term + maybe(many(keyword("or") + logical_term))
+                      >> LogicalExpression)
 
-logical_expression = logical_term + maybe(many(keyword("or") + logical_term))
-
-simple_expression = logical_expression + maybe(op(":") + logical_expression
-                                               + maybe(op(":") +
-                                                       logical_expression))
+simple_expression = (logical_expression + maybe(op(":") + logical_expression
+                                                + maybe(op(":") +
+                                                        logical_expression))
+                     >> SimpleExpression)
 
 
 @Parser
@@ -79,9 +85,10 @@ def expression(tokens, state):
 @Parser
 def named_argument(tokens, state):
     parser = token_type('ident') + op('=') + function_argument
-    return parser.run(tokens, state)
+    return (parser >> NamedArgument).run(tokens, state)
 
-named_arguments = named_argument + maybe(many(op(",") + named_argument))
+named_arguments = (named_argument + maybe(many(op(",") + named_argument))
+                   >> NamedArguments)
 
 
 @Parser
@@ -89,7 +96,7 @@ def function_argument(tokens, state):
     parser = (keyword("function") + name +
               op('(') + maybe(named_arguments) + op(')')
               | expression)
-    return parser.run(tokens, state)
+    return (parser >> FunctionArgument).run(tokens, state)
 
 
 @Parser
@@ -99,35 +106,42 @@ def function_arguments(tokens, state):
               maybe(op(",") + function_arguments
                     | keyword('for') + for_indices)
               | named_arguments)
-    return parser.run(tokens, state)
+    return (parser >> FunctionArguments).run(tokens, state)
 
 
-function_call_args = op("(") + maybe(function_arguments) + op(")")
+function_call_args = (op("(") + maybe(function_arguments) + op(")")
+                      >> FunctionCallArgs)
 
-expression_list = expression + maybe(many(op(",") + expression))
+expression_list = (expression + maybe(many(op(",") + expression))
+                   >> ExpressionList)
 
 output_expression_list = (maybe(expression) +
-                          maybe(many(op(",") + maybe(expression))))
+                          maybe(many(op(",") + maybe(expression)))
+                          >> OutputExpressionList)
 
-subscript = op(":") | expression
+
+subscript = op(":") | expression >> Subscript
 
 array_subscript = (op("[") + subscript +
-                   maybe(many(op(',') + subscript)) + op("]"))
+                   maybe(many(op(',') + subscript)) + op("]")
+                   >> ArraySubscript)
 
 component_reference = (maybe(op('.')) + token_type('ident') +
                        maybe(array_subscript) +
                        maybe(many(op('.') + token_type('ident') +
-                                  maybe(array_subscript))))
+                                  maybe(array_subscript)))
+                       >> ComponentReference)
 
-string_comment = maybe(token_type("string") +
-                       maybe(many(op("+") + token_type("string"))))
+string_comment = (maybe(token_type("string") +
+                        maybe(many(op("+") + token_type("string"))))
+                  >> StringComment)
 
 
 @Parser
 def annotation(tokens, state):
     from .modification import class_modification  # circular dependency
-    parser = keyword('annotation') + class_modification
+    parser = keyword('annotation') + class_modification >> Annotation
     return parser.run(tokens, state)
 
 
-comment = string_comment + maybe(annotation)
+comment = string_comment + maybe(annotation) >> Comment
