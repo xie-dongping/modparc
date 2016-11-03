@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # pylint: disable=missing-docstring
 
-from funcparserlib.parser import many, maybe, finished
+from funcparserlib.parser import many, maybe, skip, finished
 
 from .syntax import keyword, op
 from .expressions import name
@@ -13,5 +13,5 @@ from .syntax_elements import StoredDefinition
 
 stored_definition = (maybe(keyword("within") + maybe(name) + op(";")) +
                      maybe(many(maybe(keyword("final")) +
-                                class_definition + op(";")))
+                                class_definition + op(";"))) + skip(finished)
                      >> StoredDefinition)
