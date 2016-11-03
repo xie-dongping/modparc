@@ -8,11 +8,10 @@ test_modparc
 Tests for `modparc` module.
 """
 
-# import pytest
+from funcparserlib.parser import skip, finished
 
 from modparc.syntax import tokenize
-from modparc import expressions
-from modparc import equations
+import modparc
 
 
 # @pytest.fixture
@@ -30,67 +29,106 @@ from modparc import equations
 #     # from bs4 import BeautifulSoup
 #     # assert 'GitHub' in BeautifulSoup(response.content).title.string
 
+def verify_parsed_result(source_code, parser,
+                         subelement_type, subelement_code):
+    """
+    Verify the parsed result contain a predefined set of subelements
+
+    :param source_code: code line to be parsed
+    :param parser: parser to parse the code
+    :param subelement_type: inspect all the subelement of this type
+    :param subelement_code: reference result value for each subelement
+    :return: returns nothing
+    """
+    tokens = tokenize(source_code)
+    parsed_element = (parser + skip(finished)).parse(tokens)
+    subelements = parsed_element.search(subelement_type)
+    assert len(subelements) == len(subelement_code)
+    for (i, parsed_subelements) in enumerate(subelements):
+        assert parsed_subelements.code() == subelement_code[i]
 
 
 def test_expression_simple1():
-    string = r'x*(alpha-beta*y)'
-    expression = expressions.expression.parse(tokenize(string))
-    result = ['x * ( alpha - beta * y )', 'alpha - beta * y']
-    assert len(expression.search('Expression')) == len(result)
-    for (i, parsed_expression) in enumerate(expression.search('Expression')):
-        assert parsed_expression.code() == result[i]
+    source_code = r'x*(alpha-beta*y)'
+    subelement_code = ['x * ( alpha - beta * y )', 'alpha - beta * y']
+    subelement_type = 'Expression'
+    verify_parsed_result(source_code, modparc.expressions.expression,
+                         subelement_type, subelement_code)
 
 
 def test_expression_simple2():
-    string = r'k1*(phi2-phi1)+d1*der(phi2-phi1)'
-    expression = expressions.expression.parse(tokenize(string))
-    result = ['k1 * ( phi2 - phi1 ) + d1 * der ( phi2 - phi1 )',
-              'phi2 - phi1', 'phi2 - phi1']
-    assert len(expression.search('Expression')) == len(result)
-    for (i, parsed_expression) in enumerate(expression.search('Expression')):
-        assert parsed_expression.code() == result[i]
+    source_code = r'k1*(phi2-phi1)+d1*der(phi2-phi1)'
+    subelement_code = ['k1 * ( phi2 - phi1 ) + d1 * der ( phi2 - phi1 )',
+                       'phi2 - phi1', 'phi2 - phi1']
+    subelement_type = 'Expression'
+    verify_parsed_result(source_code, modparc.expressions.expression,
+                         subelement_type, subelement_code)
+
+
 
 def test_expression_if1():
-    string = r'if done then 0 else -9.81'
-    expression = expressions.expression.parse(tokenize(string))
-    result = ['if done then 0 else - 9.81', 'done', '0', '- 9.81']
-    assert len(expression.search('Expression')) == len(result)
-    for (i, parsed_expression) in enumerate(expression.search('Expression')):
-        assert parsed_expression.code() == result[i]
+    source_code = r'if done then 0 else -9.81'
+    subelement_code = ['if done then 0 else - 9.81', 'done', '0', '- 9.81']
+    subelement_type = 'Expression'
+    verify_parsed_result(source_code, modparc.expressions.expression,
+                         subelement_type, subelement_code)
 
 
 def test_expression_if2():
-    string = r'reinit(v, -e*(if h<-eps then 0 else pre(v)))'
-    expression = expressions.expression.parse(tokenize(string))
-    result = ['reinit ( v , - e * ( if h < - eps then 0 else pre ( v ) ) )',
-              'v', '- e * ( if h < - eps then 0 else pre ( v ) )',
-              'if h < - eps then 0 else pre ( v )', 'h < - eps',
-              '0', 'pre ( v )', 'v']
-    assert len(expression.search('Expression')) == len(result)
-    for (i, parsed_expression) in enumerate(expression.search('Expression')):
-        assert parsed_expression.code() == result[i]
+    source_code = r'reinit(v, -e*(if h<-eps then 0 else pre(v)))'
+    subelement_code = ['reinit ( v , - e * ( if h < - eps '
+                       + 'then 0 else pre ( v ) ) )',
+                       'v', '- e * ( if h < - eps then 0 else pre ( v ) )',
+                       'if h < - eps then 0 else pre ( v )', 'h < - eps',
+                       '0', 'pre ( v )', 'v']
+    subelement_type = 'Expression'
+    verify_parsed_result(source_code, modparc.expressions.expression,
+                         subelement_type, subelement_code)
+
+
+def test_function_arguments():
+    " Problem with the overloaded __or__ operator implementation bug "
+    source_code = """
+                  Text(
+                    extent={{-100,-40},{100,-80}},
+                    lineColor={0,0,0},
+                    fillColor={255,255,255},
+                    fillPattern=FillPattern.Solid,
+                    textString="%name")
+                  """
+    subelement_code = ['extent = { { - 100 , - 40 } , { 100 , - 80 } }',
+                       'lineColor = { 0 , 0 , 0 }',
+                       'fillColor = { 255 , 255 , 255 }',
+                       'fillPattern = FillPattern . Solid',
+                       'textString = "%name"']
+    subelement_type = 'NamedArgument'
+    verify_parsed_result(source_code, modparc.expressions.function_arguments,
+                         subelement_type, subelement_code)
+
 
 
 def test_simple_equation():
-    string = r'der(v) = if done then 0 else -9.81'
-    equation = equations.equation.parse(tokenize(string))
-    result = ['v', 'if done then 0 else - 9.81', 'done', '0', '- 9.81', ]
-    assert len(equation.search('Expression')) == len(result)
-    for (i, parsed_expression) in enumerate(equation.search('Expression')):
-        assert parsed_expression.code() == result[i]
+    source_code =r'der(v) = if done then 0 else -9.81'
+    subelement_code = ['v', 'if done then 0 else - 9.81', 'done',
+                       '0', '- 9.81', ]
+    subelement_type = 'Expression'
+    verify_parsed_result(source_code, modparc.equations.equation,
+                         subelement_type, subelement_code)
 
 
 def test_if_equation():
-    string = """
-             if init==InitializationOptions.FixedPopulation then
-               population = initial_population;
-             elseif init==InitializationOptions.SteadyState then
-               der(population) = 0;
-             else
-             end if;
-             """
-    if_equation = equations.if_equation.parse(tokenize(string))
-    result = ['population = initial_population', 'der ( population ) = 0']
-    assert len(if_equation.search('Equation')) == len(r esult)
-    for (i, parsed_expression) in enumerate(if_equation.search('Equation')):
-        assert parsed_expression.code() == result[i]
+    source_code = """
+                  if init==InitializationOptions.FixedPopulation then
+                    population = initial_population;
+                  elseif init==InitializationOptions.SteadyState then
+                    der(population) = 0;
+                  else
+                  end if
+                  """
+    subelement_code = ['population = initial_population',
+                       'der ( population ) = 0']
+    subelement_type = 'Equation'
+    verify_parsed_result(source_code, modparc.equations.if_equation,
+                         subelement_type, subelement_code)
+
+
