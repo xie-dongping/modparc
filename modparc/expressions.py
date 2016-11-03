@@ -102,10 +102,10 @@ def function_argument(tokens, state):
 @Parser
 def function_arguments(tokens, state):
     from .equations import for_indices  # circular dependency
-    parser = (function_argument +
+    parser = (named_arguments
+              | function_argument +
               maybe(op(",") + function_arguments
-                    | keyword('for') + for_indices)
-              | named_arguments)
+                    | keyword('for') + for_indices))
     return (parser >> FunctionArguments).run(tokens, state)
 
 
