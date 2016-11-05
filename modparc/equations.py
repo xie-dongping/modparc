@@ -85,7 +85,7 @@ def when_equation(tokens, state):
 def statement(tokens, state):
     parser = ((component_reference + (op(":=") + expression
                                       | function_call_args)
-               | (op('(') + output_expression_list + op('(') + op(':=')
+               | (op('(') + output_expression_list + op(')') + op(':=')
                   + component_reference + function_call_args)
                | keyword('break')
                | keyword('return')
