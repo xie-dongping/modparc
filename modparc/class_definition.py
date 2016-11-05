@@ -26,7 +26,7 @@ language_specification = token_type('string') >> LanguageSpecification
 base_prefix = type_prefix >> BasePrefix
 
 external_function_call = (maybe(component_reference + op("=")) +
-                          token_type('indent') + op("(") +
+                          token_type('ident') + op("(") +
                           maybe(expression_list) + op(")")
                           >> ExternalFunctionCall )
 
@@ -109,6 +109,6 @@ import_list = (token_type("ident") + maybe(many(op(",") +
 
 import_clause = (keyword('import') +
                  (token_type("ident") + op('=') + name |
-                  name + maybe(op(".") + (op("*") |
-                                          op("{") + import_list + op("}")))
-                 + comment)) >> ImportClause
+                  name + maybe(op(".*")
+                               | op(".") + op("{") + import_list + op("}")))
+                 + comment) >> ImportClause
