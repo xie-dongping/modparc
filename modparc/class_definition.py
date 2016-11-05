@@ -89,13 +89,12 @@ def class_prefixes(tokens, state):
     km = lambda key: maybe(keyword(key))
     function_prefix = (maybe(kw("pure") | kw("impure")) + km("operator")
                        + kw("function"))
-    parser = (km("partial") + (kw("class") | kw("model") |
-              (km("operator") + kw("record")) |
+    parser = (km("partial") + ((kw("class") | kw("model") |
+              km("operator") + kw("record") |
               kw("block") |
               (km("expandable") + kw("connector")) |
-              kw("type") | kw("type") |
-              (km("expandable") + kw("connector")) |
-              function_prefix | kw("operator")))
+              kw("type") | kw("package") |
+              function_prefix | kw("operator"))))
 
     return (parser >> ClassPrefixes).run(tokens, state)
 

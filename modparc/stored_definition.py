@@ -12,6 +12,6 @@ from .syntax_elements import StoredDefinition
 # pylint: enable=no-name-in-module
 
 stored_definition = (maybe(keyword("within") + maybe(name) + op(";")) +
-                     maybe(many(maybe(keyword("final")) +
-                                class_definition + op(";"))) + skip(finished)
+                     many(maybe(keyword("final")) +
+                                class_definition + op(";")) + skip(finished)
                      >> StoredDefinition)

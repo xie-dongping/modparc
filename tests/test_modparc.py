@@ -47,8 +47,14 @@ def verify_parsed_result(source_code, parser,
     for (i, parsed_subelements) in enumerate(subelements):
         assert parsed_subelements.code() == subelement_code[i]
 
+def test_simple_expression():
+    source_code = "1:n"
+    subelement_code = ['1', 'n']
+    subelement_type = 'LogicalExpression'
+    verify_parsed_result(source_code, modparc.expressions.expression,
+                         subelement_type, subelement_code)
 
-def test_expression_simple1():
+def test_expression1():
     source_code = r'x*(alpha-beta*y)'
     subelement_code = ['x * ( alpha - beta * y )', 'alpha - beta * y']
     subelement_type = 'Expression'
@@ -56,7 +62,7 @@ def test_expression_simple1():
                          subelement_type, subelement_code)
 
 
-def test_expression_simple2():
+def test_expression2():
     source_code = r'k1*(phi2-phi1)+d1*der(phi2-phi1)'
     subelement_code = ['k1 * ( phi2 - phi1 ) + d1 * der ( phi2 - phi1 )',
                        'phi2 - phi1', 'phi2 - phi1']
@@ -131,4 +137,15 @@ def test_if_equation():
     verify_parsed_result(source_code, modparc.equations.if_equation,
                          subelement_type, subelement_code)
 
-
+# def test_for_equation():
+#     source_code = """
+#                   for i in 1:n loop
+#                     connect(capacitance[i].port, wall[i].port_b) "Capacitance to walls";
+#                     connect(wall[i].port_a, ambient) "Walls to ambient";
+#                   end for;
+#                   """
+#     subelement_code = ['population = initial_population',
+#                        'der ( population ) = 0']
+#     subelement_type = 'Equation'
+#     verify_parsed_result(source_code, modparc.equations.if_equation,
+#                          subelement_type, subelement_code)

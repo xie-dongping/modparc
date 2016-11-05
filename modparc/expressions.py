@@ -1,9 +1,6 @@
 # -*- coding: utf-8 -*-
 # pylint: disable=missing-docstring
 
-# pylint: disable=missing-docstring
-# pylint: disable=no-name-in-module
-# pylint: enable=no-name-in-module
 from funcparserlib.parser import many, maybe, Parser
 
 from .syntax import keyword, op, token_type
@@ -20,7 +17,7 @@ from .syntax_elements import (Expression, SimpleExpression, LogicalExpression,
                               StringComment, Annotation, Comment)
 # pylint: enable=no-name-in-module
 
-name = (op(".", maybe) + token_type("ident") +
+name = (maybe(op(".")) + token_type("ident") +
         maybe(many(op(".") + token_type("ident"))) >> Name)
 
 rel_op = op("<") | op("<=") | op(">") | op(">=") | op("==") | op("<>") >> RelOp
