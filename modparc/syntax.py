@@ -39,15 +39,15 @@ def op(key, combinator=a):
 def tokenize(string):
     token_specs = [
         ('string', (r'"([^\\"]|\\.|[\r\n])*?"', MULTILINE)),
+        ('comment', (r'/\*(.|[\r\n])*?\*/', MULTILINE)),
         ('ident', (r"'" + r'([a-zA-Z_0-9' +
                    r'!#%&()*+,\-\./:;<>=?@\[\]\^{}|~ ' +
                    r'\"\?\\\a\b\f\n\r\t\v])*' + r"'",)),  # TODO: Unicode
-        ('comment', (r'/\*(.|[\r\n])*?\*/', MULTILINE)),
         ('comment', (r'//.*',)),
         ('newline', (r'[\r\n]+',)),
         ('whitespace', (r'[ \t\r\n]+',)),
         ('keyword', (r'(' + r'\b|'.join(KEYWORDS) + r'\b)',)),
-        ('number', (r'\d+(\.\d+)?([eE][\+-]?\d+)?',)),
+        ('number', (r'\d+(\.(\d+)?)?([eE][\+-]?\d+)?',)),
         ('ident', (r'[a-zA-Z_][a-zA-Z_0-9]*',)),
         ('op', (r'(<>|<=|>=|==)',)),
         ('op', (r'[<>]',)),

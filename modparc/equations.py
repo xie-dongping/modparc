@@ -13,7 +13,7 @@ from .syntax_elements import (ForIndex, ForIndices, ConnectClause,
                               Equation, IfEquation, ForEquation, WhileEquation,
                               WhenEquation, Statement, IfStatement,
                               ForStatement, WhileStatement, WhenStatement,
-                              EquationSection, AlgorithmSection)
+                              EquationSection, AlgorithmSection, Assertion)
 # pylint: enable=no-name-in-module
 
 for_index = (token_type('ident') + maybe(keyword('in') + expression)
@@ -24,6 +24,7 @@ for_indices = for_index + maybe(many(op(',') + for_index)) >> ForIndices
 connect_clause = (keyword("connect") + op("(") + component_reference
                   + op(",") + component_reference + op(")")) >> ConnectClause
 
+assertion = keyword("assert") + function_call_args >> Assertion
 
 @Parser
 def equation(tokens, state):
@@ -32,6 +33,7 @@ def equation(tokens, state):
                | for_equation
                | connect_clause
                | when_equation
+               | assertion
                | name + function_call_args)
               + comment) >> Equation
     return parser.run(tokens, state)
@@ -87,6 +89,7 @@ def statement(tokens, state):
                   + component_reference + function_call_args)
                | keyword('break')
                | keyword('return')
+               | assertion
                | if_statement
                | for_statement
                | connect_clause
