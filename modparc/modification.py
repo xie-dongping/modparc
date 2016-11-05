@@ -56,7 +56,11 @@ element_redeclaration = (keyword("redeclare") + maybe(keyword("each"))
 element_modification = (name + maybe(modification) + string_comment
                         >> ElementModification)
 
-km = lambda key: maybe(keyword(key))
+
+def km(key):
+    " function short-hand"
+    return maybe(keyword(key))
+
 element_modification_or_replaceable = (km('each') + km('final') +
                                        (element_modification |
                                         element_replaceable)

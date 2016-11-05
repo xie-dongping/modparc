@@ -18,7 +18,7 @@ Modelica Parser
      :alt: Updates
 
 
-A Modelica parser based on parser generato
+A Modelica parser based on parser combinator.
 
 
 * Free software: GNU General Public License v3
@@ -34,7 +34,7 @@ Known Issues
 --------
 
 * Handling tokenization of Q-IDENT and comments, which comes first?
-* assertion syntax not defined in modelica specification
+* Assertion syntax not defined in modelica specification
 * Recursion limit (since not tail recursion optimization)
 * Test case for long vector literals
 

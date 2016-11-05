@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+
 class SyntaxElement(object):
 
     def __init__(self, elements):
@@ -26,7 +27,7 @@ class SyntaxElement(object):
 
         if hasattr(syntax_element, 'elements'):
             SyntaxElement.find(syntax_element.elements,
-                                 type_name, result)
+                               type_name, result)
         elif hasattr(syntax_element, '__getitem__'):
             for el in syntax_element:
                 SyntaxElement.find(el, type_name, result)
