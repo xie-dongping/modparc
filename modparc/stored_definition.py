@@ -13,5 +13,5 @@ from .syntax_elements import StoredDefinition
 
 stored_definition = (maybe(keyword("within") + maybe(name) + op(";")) +
                      many(maybe(keyword("final")) +
-                                class_definition + op(";")) + skip(finished)
+                          class_definition + op(";")) + skip(finished)
                      >> StoredDefinition)

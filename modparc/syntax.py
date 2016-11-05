@@ -4,7 +4,6 @@ from funcparserlib.lexer import Token
 from funcparserlib.parser import some, a, maybe
 import funcparserlib.lexer
 from re import MULTILINE
-import pprint
 
 from .specification import KEYWORDS
 
@@ -38,7 +37,7 @@ def op(key, combinator=a):
 
 def tokenize(string):
     token_specs = [
-        ('string', (r'"([^\\"]|\\.|[\r\n])*?"', MULTILINE)),
+        ('string', (r'"([^\\\"]|\\.|[\r\n])*?"', MULTILINE)),
         ('comment', (r'/\*(.|[\r\n])*?\*/', MULTILINE)),
         ('ident', (r"'" + r'([a-zA-Z_0-9' +
                    r'!#%&()*+,\-\./:;<>=?@\[\]\^{}|~ ' +

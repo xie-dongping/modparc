@@ -18,8 +18,6 @@ type_prefix = (maybe(kw("flow") | kw("stream")) +
                maybe(kw("discrete") | kw("parameter") | kw("constant")) +
                maybe(kw("input") | kw("output"))) >> TypePrefix
 
-
-
 type_specifier = name >> TypeSpecifier
 
 condition_attribute = keyword('if') + expression >> ConditionAttribute

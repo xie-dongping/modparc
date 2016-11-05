@@ -28,25 +28,30 @@ base_prefix = type_prefix >> BasePrefix
 external_function_call = (maybe(component_reference + op("=")) +
                           token_type('ident') + op("(") +
                           maybe(expression_list) + op(")")
-                          >> ExternalFunctionCall )
+                          >> ExternalFunctionCall)
+
 
 @Parser
 def class_definition(tokens, state):
     parser = maybe(keyword("encapsulated")) + class_prefixes + class_specifier
-    return (parser >>  ClassDefinition).run(tokens, state)
+    return (parser >> ClassDefinition).run(tokens, state)
+
+
+def km(key):
+    "function shorthand"
+    return maybe(keyword(key))
 
 
 @Parser
 def element(tokens, state):
-    k = keyword
-    km = lambda key: maybe(keyword(key))
+    kw = keyword
     parser = (import_clause |
               extends_clause |
               km('redeclare') + km('final') +
               km('inner') + km('outer') +
               ((class_definition | component_clause) |
-               k('replaceable') + (class_definition |
-                                   component_clause)
+               kw('replaceable') + (class_definition |
+                                    component_clause)
                + maybe(constraining_clause + comment)))
     return (parser >> Element).run(tokens, state)
 
@@ -86,7 +91,6 @@ def class_specifier(tokens, state):
 @Parser
 def class_prefixes(tokens, state):
     kw = keyword
-    km = lambda key: maybe(keyword(key))
     function_prefix = (maybe(kw("pure") | kw("impure")) + km("operator")
                        + kw("function"))
     parser = (km("partial") + ((kw("class") | kw("model") |

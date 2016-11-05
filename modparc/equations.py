@@ -26,6 +26,7 @@ connect_clause = (keyword("connect") + op("(") + component_reference
 
 assertion = keyword("assert") + function_call_args >> Assertion
 
+
 @Parser
 def equation(tokens, state):
     parser = ((simple_expression + op("=") + expression
