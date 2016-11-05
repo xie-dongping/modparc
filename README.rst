@@ -34,6 +34,9 @@ Known Issues
 --------
 
 * Handling tokenization of Q-IDENT and comments, which comes first?
+* assertion syntax not defined in modelica specification
+* Recursion limit (since not tail recursion optimization)
+* Test case for long vector literals
 
 Credits
 ---------

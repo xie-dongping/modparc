@@ -55,7 +55,7 @@ def tokenize(string):
         ('op', (r'[+\-]',)),
         ('op', (r'(\.\*|\./)',)),
         ('op', (r':=',)),
-        ('op', (r'[*/]',)),
+        ('op', (r'\.\^',)),
         ('op', (r'[\[\]\.(){}\^+\-*/=\,;\:]',)),
     ]
     inner_tokenize = funcparserlib.lexer.make_tokenizer(token_specs)

@@ -92,6 +92,7 @@ def statement(tokens, state):
                | assertion
                | if_statement
                | for_statement
+               | while_statement
                | connect_clause
                | when_statement)
               + comment) >> Statement
