@@ -16,7 +16,7 @@ from .syntax_elements import (ForIndex, ForIndices, ConnectClause,
                               EquationSection, AlgorithmSection)
 # pylint: enable=no-name-in-module
 
-for_index = (token_type('indent') + maybe(keyword('in') + expression)
+for_index = (token_type('ident') + maybe(keyword('in') + expression)
              >> ForIndex)
 
 for_indices = for_index + maybe(many(op(',') + for_index)) >> ForIndices

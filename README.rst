@@ -3,18 +3,18 @@ Modelica Parser
 ===============================
 
 
-.. image:: https://img.shields.io/pypi/v/modelicaparser.svg
-        :target: https://pypi.python.org/pypi/modelicaparser
+.. image:: https://img.shields.io/pypi/v/modparc.svg
+        :target: https://pypi.python.org/pypi/modparc
 
-.. image:: https://img.shields.io/travis/xie-dongping/modelicaparser.svg
-        :target: https://travis-ci.org/xie-dongping/modelicaparser
+.. image:: https://img.shields.io/travis/xie-dongping/modparc.svg
+        :target: https://travis-ci.org/xie-dongping/modparc
 
-.. image:: https://readthedocs.org/projects/modelicaparser/badge/?version=latest
-        :target: https://modelicaparser.readthedocs.io/en/latest/?badge=latest
+.. image:: https://readthedocs.org/projects/modparc/badge/?version=latest
+        :target: https://modparc.readthedocs.io/en/latest/?badge=latest
         :alt: Documentation Status
 
-.. image:: https://pyup.io/repos/github/xie-dongping/modelicaparser/shield.svg
-     :target: https://pyup.io/repos/github/xie-dongping/modelicaparser/
+.. image:: https://pyup.io/repos/github/xie-dongping/modparc/shield.svg
+     :target: https://pyup.io/repos/github/xie-dongping/modparc/
      :alt: Updates
 
 
@@ -22,7 +22,7 @@ A Modelica parser based on parser generato
 
 
 * Free software: GNU General Public License v3
-* Documentation: https://modelicaparser.readthedocs.io.
+* Documentation: https://modparc.readthedocs.io.
 
 
 Features
@@ -33,13 +33,10 @@ Features
 Known Issues
 --------
 
-* Question about the last of the Q-CHAR at Modelica Spec 3.3 (What is `" "_`?)
 * Handling tokenization of Q-IDENT and comments, which comes first?
 
 Credits
 ---------
-
-The ANTLR parser grammar is taken from the OpenModelica compiler.
 
 This package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypackage`_ project template.
 

@@ -41,22 +41,22 @@ def tokenize(string):
         ('string', (r'"([^\\"]|\\.|[\r\n])*?"', MULTILINE)),
         ('ident', (r"'" + r'([a-zA-Z_0-9' +
                    r'!#%&()*+,\-\./:;<>=?@\[\]\^{}|~ ' +
-                   r'\"\?\\\a\b\f\n\r\t\v]|[^\\"]|\\.)*' + r"'",)),
+                   r'\"\?\\\a\b\f\n\r\t\v])*' + r"'",)),  # TODO: Unicode
         ('comment', (r'/\*(.|[\r\n])*?\*/', MULTILINE)),
         ('comment', (r'//.*',)),
         ('newline', (r'[\r\n]+',)),
         ('whitespace', (r'[ \t\r\n]+',)),
         ('keyword', (r'(' + r'\b|'.join(KEYWORDS) + r'\b)',)),
+        ('number', (r'\d+(\.\d+)?([eE][\+-]?\d+)?',)),
         ('ident', (r'[a-zA-Z_][a-zA-Z_0-9]*',)),
-        ('number', (r'\d+(\.\d+)?([eE]\d+)?',)),
         ('op', (r'(<>|<=|>=|==)',)),
         ('op', (r'[<>]',)),
         ('op', (r'(\.\+|\.-)',)),
         ('op', (r'[+\-]',)),
         ('op', (r'(\.\*|\./)',)),
-        ('op', (r'[:=]',)),
+        ('op', (r':=',)),
         ('op', (r'[*/]',)),
-        ('op', (r'[\[\]\.(){}\^+\-*/=\,;:]',)),
+        ('op', (r'[\[\]\.(){}\^+\-*/=\,;\:]',)),
     ]
     inner_tokenize = funcparserlib.lexer.make_tokenizer(token_specs)
     useless = ['comment', 'newline', 'whitespace']
