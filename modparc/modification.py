@@ -48,7 +48,7 @@ element_replaceable = (keyword("replaceable") + (short_class_definition
                                                  | component_clause1)
                        + maybe(constraining_clause)) >> ElementReplaceable
 
-element_redeclaration = (keyword("replaceable") + maybe(keyword("each"))
+element_redeclaration = (keyword("redeclare") + maybe(keyword("each"))
                          + maybe(keyword("final")) +
                          ((short_class_definition | component_clause1
                           | element_replaceable))) >> ElementRedeclaration

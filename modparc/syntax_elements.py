@@ -52,7 +52,7 @@ classes = ['Expression', 'SimpleExpression', 'LogicalExpression',
            "ComponentDeclaration1", "ComponentClause1", "ElementReplaceable",
            "ElementRedeclaration", "ElementModification",
            "ElementModificationOrReplaceable", "Argument", "ArgumentList",
-           "ClassModification", "StoredDefinition",]
+           "ClassModification", "StoredDefinition", "Assertion"]
 
 variables = globals()
 

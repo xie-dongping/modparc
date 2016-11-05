@@ -17,8 +17,9 @@ from .syntax_elements import (Expression, SimpleExpression, LogicalExpression,
                               StringComment, Annotation, Comment)
 # pylint: enable=no-name-in-module
 
-name = (maybe(op(".")) + token_type("ident") +
-        maybe(many(op(".") + token_type("ident"))) >> Name)
+name = (maybe(op(".")) + (token_type("ident") | keyword("assert")) +
+        maybe(many(op(".") + (token_type("ident") | keyword("assert"))))
+        >> Name)
 
 rel_op = op("<") | op("<=") | op(">") | op(">=") | op("==") | op("<>") >> RelOp
 
