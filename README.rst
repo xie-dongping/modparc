@@ -41,8 +41,6 @@ Install the package from PyPI:
 To parse a Modelica source file `"your_modelica_file.mo"`:
 
 .. code-block:: python
-   :linenos:
-   :emphasize-lines: 4
 
     import modparc
     with open("your_modelica_file.mo", 'r') as f:
@@ -52,8 +50,6 @@ To parse a Modelica source file `"your_modelica_file.mo"`:
 To use the `model_definition` instance:
 
 .. code-block:: python
-   :emphasize-lines: 1,3
-   :lineno-start: 5
 
     all_equations = model_definition.search('Equation')
     for equation in all_equations:
@@ -62,8 +58,6 @@ To use the `model_definition` instance:
 One could also parse a certain syntax element in Modelica:
 
 .. code-block:: python
-   :linenos:
-   :emphasize-lines: 11-13
 
     import modparc
     from modparc.syntax import tokenize
