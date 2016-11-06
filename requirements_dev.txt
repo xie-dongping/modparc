@@ -8,5 +8,5 @@ coverage==4.2
 Sphinx==1.4.8
 cryptography==1.5.3
 PyYAML==3.12
-pytest==2.9.2
+pytest==3.0.3
 funcparserlib
