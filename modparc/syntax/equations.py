@@ -1,19 +1,34 @@
 # -*- coding: utf-8 -*-
-# pylint: disable=missing-docstring
+"""
+equations
+----------------------------------
+
+Parser definition for funcparserlib. The parsers that need forward declaration
+are defined as function annotated by the `Parser` decorator
+
+The definitions are specified in the Appendix B.2.6 of the Modelica
+Specification 3.3.
+
+Note that there's no definition for the assertion statement/calls in the
+specification, so the Assertion parser is separately defined.
+"""
 
 from funcparserlib.parser import many, maybe, Parser
-from .syntax import keyword, op, token_type
 
-from .expressions import (expression, simple_expression, name, comment,
-                          function_call_args, component_reference,
-                          output_expression_list)
-
-# pylint: disable=no-name-in-module
-from .syntax_elements import (ForIndex, ForIndices, ConnectClause,
-                              Equation, IfEquation, ForEquation, WhileEquation,
-                              WhenEquation, Statement, IfStatement,
-                              ForStatement, WhileStatement, WhenStatement,
-                              EquationSection, AlgorithmSection, Assertion)
+# pylint: disable=no-name-in-module, missing-docstring
+from modparc.syntax import keyword, op, token_type
+from modparc.syntax.expressions import (expression, simple_expression, name,
+                                        comment, function_call_args,
+                                        component_reference,
+                                        output_expression_list)
+from modparc.syntax.syntax_elements import (ForIndex, ForIndices,
+                                            ConnectClause, Equation,
+                                            IfEquation, ForEquation,
+                                            WhileEquation, WhenEquation,
+                                            Statement, IfStatement,
+                                            ForStatement, WhileStatement,
+                                            WhenStatement, EquationSection,
+                                            AlgorithmSection, Assertion)
 # pylint: enable=no-name-in-module
 
 for_index = (token_type('ident') + maybe(keyword('in') + expression)

@@ -1,22 +1,33 @@
 # -*- coding: utf-8 -*-
-# pylint: disable=missing-docstring
+"""
+modification
+----------------------------------
+
+Parser definition for funcparserlib. The parsers that need forward declaration
+are defined as function annotated by the `Parser` decorator
+
+The definitions are specified in the Appendix B.2.5 of the Modelica
+Specification 3.3.
+"""
 
 from funcparserlib.parser import many, maybe, Parser
 
-from .syntax import keyword, op, token_type
-
-from .expressions import (name, expression, string_comment,
-                          array_subscript, comment)
-from .component_clause import declaration, type_specifier, type_prefix
-from .extends import constraining_clause
-
-# pylint: disable=no-name-in-module
-from .syntax_elements import (Modification, ShortClassDefinition,
-                              ComponentDeclaration1, ComponentClause1,
-                              ElementReplaceable, ElementRedeclaration,
-                              ElementModification,
-                              ElementModificationOrReplaceable,
-                              Argument, ArgumentList, ClassModification)
+# pylint: disable=no-name-in-module, missing-docstring
+from modparc.syntax import keyword, op, token_type
+from modparc.syntax.component_clause import (declaration, type_specifier,
+                                             type_prefix)
+from modparc.syntax.expressions import (name, expression, string_comment,
+                                        array_subscript, comment)
+from modparc.syntax.extends import constraining_clause
+from modparc.syntax.syntax_elements import (Modification, ShortClassDefinition,
+                                            ComponentDeclaration1,
+                                            ComponentClause1,
+                                            ElementReplaceable,
+                                            ElementRedeclaration,
+                                            ElementModification,
+                                            ElementModificationOrReplaceable,
+                                            Argument, ArgumentList,
+                                            ClassModification)
 # pylint: enable=no-name-in-module
 
 
@@ -31,7 +42,8 @@ def modification(tokens, state):
 @Parser
 def short_class_definition(tokens, state):
     # circular import!
-    from .class_definition import class_prefixes, enum_list, base_prefix
+    from modparc.syntax.class_definition import (class_prefixes, enum_list,
+                                                 base_prefix)
     parser = (class_prefixes + token_type("ident") + op("=")
               + (base_prefix + name + maybe(array_subscript)
                  + maybe(class_modification) + comment
@@ -58,7 +70,6 @@ element_modification = (name + maybe(modification) + string_comment
 
 
 def km(key):
-    " function short-hand"
     return maybe(keyword(key))
 
 element_modification_or_replaceable = (km('each') + km('final') +

@@ -2,7 +2,7 @@
 GNU GENERAL PUBLIC LICENSE
                       Version 3, 29 June 2007
 
-    A Modelica parser based on parser combinator
+    A Python Modelica parser based on parser combinator
     Copyright (C) 2016  黄思婷 Siting HUANG
 
     This program is free software: you can redistribute it and/or modify

@@ -2,7 +2,7 @@
 Credits
 =======
 
-Development Lead
+Author
 ----------------
 
 * 谢东平 Dongping XIE <dongping.xie.tud@gmail.com>

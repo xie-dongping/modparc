@@ -1,24 +1,35 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# pylint: disable=missing-docstring
+# pylint: disable=no-name-in-module, missing-docstring
+"""
+class_definition
+----------------------------------
+
+Parser definition for funcparserlib. The parsers that need forward declaration
+are defined as function annotated by the `Parser` decorator.
+
+The definitions are specified in the Appendix B.2.2 of the Modelica
+Specification 3.3.
+"""
+
 
 from funcparserlib.parser import many, maybe, Parser
 
-from .syntax import keyword, op, token_type
-
-from .expressions import (name, comment, annotation, string_comment,
-                          component_reference, array_subscript,
-                          expression_list)
-from .component_clause import type_prefix, component_clause
-from .extends import extends_clause, constraining_clause
-from .equations import equation_section, algorithm_section
-from .modification import class_modification
-
-# pylint: disable=no-name-in-module
-from .syntax_elements import (LanguageSpecification, BasePrefix,
-                              ExternalFunctionCall, ClassDefinition, Element,
-                              ElementList, Composition, ClassSpecifier,
-                              ClassPrefixes, EnumerationLiteral, EnumList,
-                              ImportList, ImportClause)
+from modparc.syntax import keyword, op, token_type
+from modparc.syntax.component_clause import type_prefix, component_clause
+from modparc.syntax.equations import equation_section, algorithm_section
+from modparc.syntax.expressions import (name, comment, annotation,
+                                        string_comment, component_reference,
+                                        array_subscript, expression_list)
+from modparc.syntax.extends import extends_clause, constraining_clause
+from modparc.syntax.modification import class_modification
+from modparc.syntax.syntax_elements import (LanguageSpecification, BasePrefix,
+                                            ExternalFunctionCall,
+                                            ClassDefinition, Element,
+                                            ElementList, Composition,
+                                            ClassSpecifier, ClassPrefixes,
+                                            EnumerationLiteral, EnumList,
+                                            ImportList, ImportClause)
 # pylint: enable=no-name-in-module
 
 language_specification = token_type('string') >> LanguageSpecification
@@ -38,7 +49,6 @@ def class_definition(tokens, state):
 
 
 def km(key):
-    "function shorthand"
     return maybe(keyword(key))
 
 

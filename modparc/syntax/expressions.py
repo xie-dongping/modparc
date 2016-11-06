@@ -1,20 +1,32 @@
 # -*- coding: utf-8 -*-
-# pylint: disable=missing-docstring
+
+"""
+expressions
+----------------------------------
+
+Parser definition for funcparserlib. The parsers that need forward declaration
+are defined as function annotated by the `Parser` decorator
+
+The definitions are specified in the Appendix B.2.7 of the Modelica
+Specification 3.3.
+"""
 
 from funcparserlib.parser import many, maybe, Parser
 
-from .syntax import keyword, op, token_type
-
-# pylint: disable=no-name-in-module
-from .syntax_elements import (Expression, SimpleExpression, LogicalExpression,
-                              LogicalTerm, LogicalFactor, Relation,
-                              ArithmeticExpression, Term, Factor, Primary,
-                              RelOp, MulOp, AddOp, Name, NamedArgument,
-                              NamedArguments, FunctionArgument,
-                              FunctionArguments, FunctionCallArgs,
-                              ExpressionList, OutputExpressionList, Subscript,
-                              ArraySubscript, ComponentReference,
-                              StringComment, Annotation, Comment)
+# pylint: disable=no-name-in-module, missing-docstring
+from modparc.syntax import keyword, op, token_type
+from modparc.syntax.syntax_elements import (Expression, SimpleExpression,
+                                            LogicalExpression, LogicalTerm,
+                                            LogicalFactor, Relation,
+                                            ArithmeticExpression, Term, Factor,
+                                            Primary, RelOp, MulOp, AddOp, Name,
+                                            NamedArgument, NamedArguments,
+                                            FunctionArgument,
+                                            FunctionArguments,
+                                            FunctionCallArgs, ExpressionList,
+                                            OutputExpressionList, Subscript,
+                                            ArraySubscript, ComponentReference,
+                                            StringComment, Annotation, Comment)
 # pylint: enable=no-name-in-module
 
 name = (maybe(op(".")) + (token_type("ident") | keyword("assert")) +
@@ -99,7 +111,9 @@ def function_argument(tokens, state):
 
 @Parser
 def function_arguments(tokens, state):
-    from .equations import for_indices  # circular dependency
+    from modparc.syntax.equations import for_indices  # circular dependency
+    # Since funcparserlib doesn't have full backtracking
+    # the `named_arguments` parser is matched first to avoid problems
     parser = (named_arguments
               | function_argument +
               maybe(op(",") + function_arguments

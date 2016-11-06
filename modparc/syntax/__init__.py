@@ -1,20 +1,39 @@
 # -*- coding: utf-8 -*-
+"""
+syntax
+----------------------------------
+
+The main utilities module for the parser implementation, with tokenizer
+and parser creation functions.
+"""
 
 from funcparserlib.lexer import Token
 from funcparserlib.parser import some, a, maybe
 import funcparserlib.lexer
 from re import MULTILINE
 
-from .specification import KEYWORDS
+from modparc.specification import KEYWORDS
 
 
 def token_type(tok_type):
-    "Match the token of a certain type"
+    """
+    Get a parser matching a certain type of tokens
+
+    :param tok_type: predefined token type to be matched
+    :return: a parser that matches token of type `tok_type`
+    """
     return some(lambda tok: tok.type == tok_type)
 
 
 def language_element(key, tok_type, combinator=a):
-    "Type to match language element by using a certain combinator"
+    """
+    Parser to match language element by using a certain combinator
+
+    :param key: exact key of the token, e.g.: `begin`, `model`, `)`
+    :param tok_type: predefined token type to be matched
+    :param combinator: use the combinator to create a parser
+    :return: a parser that matches elements using the above condition
+    """
     if combinator == a:
         return combinator(Token(tok_type, key))
     elif combinator == some:
@@ -22,20 +41,38 @@ def language_element(key, tok_type, combinator=a):
     elif combinator == maybe:
         return combinator(a(Token(tok_type, key)))
     else:
-        raise Exception("Parse error")
+        raise Exception("Parser creation error")
 
 
 def keyword(key, combinator=a):
-    "Match the keyword tokens"
+    """
+    Parser to match a keyword token with a key and a combinator
+
+    :param key: exact key of the keyword, e.g.: `begin`, `assert` etc.
+    :param combinator: use the combinator to create a parser
+    :return: a parser that matches a keyword
+    """
     return language_element(key, tok_type='keyword', combinator=combinator)
 
 
 def op(key, combinator=a):
-    "Match the operator tokens"
+    """
+    Parser to match a operator token with a key and a combinator
+
+    :param key: exact key of the operator, e.g.: `+`, `.*` etc.
+    :param combinator: use the combinator to create a parser
+    :return: a parser that matches an operator
+    """
     return language_element(key, tok_type='op', combinator=combinator)
 
 
-def tokenize(string):
+def tokenize(source_code):
+    """
+    Tokenizer according to Modelica Specification §2 and Appendix B.1
+
+    :param source_code: source code to be tokenized
+    :return: list of tokens created
+    """
     token_specs = [
         ('string', (r'"([^\\\"]|\\.|[\r\n])*?"', MULTILINE)),
         ('comment', (r'/\*(.|[\r\n])*?\*/', MULTILINE)),
@@ -60,4 +97,5 @@ def tokenize(string):
     inner_tokenize = funcparserlib.lexer.make_tokenizer(token_specs)
     useless = ['comment', 'newline', 'whitespace']
 
-    return [tok for tok in inner_tokenize(string) if tok.type not in useless]
+    return [tok for tok in inner_tokenize(source_code)
+            if tok.type not in useless]
