@@ -19,8 +19,8 @@ test_requirements = [
 
 setup(
     name='modparc',
-    version='version='0.1.1'',
-    description="A Modelica parser based on parser generato",
+    version='0.1.2',
+    description="A Modelica parser based on parser generator",
     long_description=readme + '\n\n' + history,
     author="谢东平 Dongping XIE",
     author_email='dongping.xie.tud@gmail.com',
