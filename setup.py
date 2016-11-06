@@ -14,10 +14,10 @@ requirements = [
 ]
 
 test_requirements = [
-    funcparserlib
-    pytest
-    tox
-    flake8
+    funcparserlib,
+    pytest,
+    tox,
+    flake8,
     wheel
 ]
 
