@@ -32,6 +32,7 @@ Quickstart
 --------
 
 Install the package from PyPI:
+
 .. code-block:: bash
 
     $ pip install modparc
@@ -40,19 +41,30 @@ Install the package from PyPI:
 To parse a Modelica source file `"your_modelica_file.mo"`:
 
 .. code-block:: python
+   :linenos:
+   :emphasize-lines: 4
+
     import modparc
     with open("your_modelica_file.mo", 'r') as f:
         modelica_source_code = f.read()
         model_definition = modparc.parse(modelica_source_code)
 
 To use the `model_definition` instance:
+
 .. code-block:: python
+   :emphasize-lines: 1,3
+   :lineno-start: 5
+
     all_equations = model_definition.search('Equation')
     for equation in all_equations:
         print(equation.code())  # The code of the equation as string
 
-One could also parse a certain syntax element in Modelica
+One could also parse a certain syntax element in Modelica:
+
 .. code-block:: python
+   :linenos:
+   :emphasize-lines: 11-13
+
     import modparc
     from modparc.syntax import tokenize
     source_code = """
@@ -82,7 +94,7 @@ Known Issues
 
 * Handling tokenization of Q-IDENT and comments, which comes first?
 * Assertion syntax not defined in modelica specification
-* Recursion limit (since not tail recursion optimization)
+* Recursion limit (since no tail recursion optimization)
 * Test case for long vector literals
 * Default recursion depth is not enough for long vector literals
 * Cyclic import is neccessary for the Modelica syntax definition
