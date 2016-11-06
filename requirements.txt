@@ -1,1 +1,1 @@
-funcparserlib
+funcparserlib==0.3.6
