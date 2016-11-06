@@ -20,13 +20,15 @@ modparc
 
 modparc is a Modelica parser in Python based on parser combinator.
 
+The goal is create a Python library to reliably edit or generate a Modelica model file.
+
 
 * Free software: GNU General Public License v3
 * Documentation: https://modparc.readthedocs.io.
 
+
 .. contents::
 
-.. section-numbering::
 
 Quickstart
 --------
