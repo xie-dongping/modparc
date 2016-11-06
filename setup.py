@@ -10,16 +10,20 @@ with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
 requirements = [
-    # TODO: put package requirements here
+    funcparserlib
 ]
 
 test_requirements = [
-    # TODO: put package test requirements here
+    funcparserlib
+    pytest
+    tox
+    flake8
+    wheel
 ]
 
 setup(
     name='modparc',
-    version='0.1.2',
+    version='0.1.3',
     description="A Modelica parser based on parser generator",
     long_description=readme + '\n\n' + history,
     author="谢东平 Dongping XIE",
@@ -41,7 +45,6 @@ setup(
         'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
         'Natural Language :: English',
         "Programming Language :: Python :: 2",
-        'Programming Language :: Python :: 2.6',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.3',
