@@ -31,6 +31,7 @@ setup(
     url='https://github.com/xie-dongping/modparc',
     packages=[
         'modparc',
+        'modparc.syntax',
     ],
     package_dir={'modparc':
                  'modparc'},
