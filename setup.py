@@ -10,15 +10,15 @@ with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
 requirements = [
-    funcparserlib
+    "funcparserlib",
 ]
 
 test_requirements = [
-    funcparserlib,
-    pytest,
-    tox,
-    flake8,
-    wheel
+    "funcparserlib",
+    "pytest",
+    "tox",
+    "flake8",
+    "wheel"
 ]
 
 setup(
