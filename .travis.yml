@@ -24,7 +24,7 @@ deploy:
   distributions: sdist bdist_wheel
   user: xie-dongping
   password:
-    secure: PLEASE_REPLACE_ME
+    secure: PYPI_PASSWORD
   on:
     tags: true
     repo: xie-dongping/modparc
