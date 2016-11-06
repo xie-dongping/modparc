@@ -1,5 +1,5 @@
 ===============================
-Modelica Parser
+modparc
 ===============================
 
 
@@ -18,7 +18,7 @@ Modelica Parser
      :alt: Updates
 
 
-A Modelica parser based on parser combinator.
+modparc is a Modelica parser in Python based on parser combinator.
 
 
 * Free software: GNU General Public License v3
