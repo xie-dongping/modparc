@@ -37,6 +37,8 @@ Known Issues
 * Assertion syntax not defined in modelica specification
 * Recursion limit (since not tail recursion optimization)
 * Test case for long vector literals
+* Default recursion depth is not enough for long vector literals
+* Cyclic import is neccessary for the Modelica syntax definition
 
 Credits
 ---------

@@ -38,7 +38,7 @@ disable=
 # W0142: Used * or ** magic
 # W0141: Used builtin function 'map'
 # I0011: 36,0: Locally disabling E1101
-    C0103, locally-disabled
+    invalid-name, locally-disabled, locally-enabled, cyclic-import
 
 
 [REPORTS]
@@ -102,9 +102,6 @@ generated-members=
 
 
 [BASIC]
-
-# Required attributes for module, separated by a comma
-required-attributes=
 
 # List of builtins function names that should not be used, separated by a comma
 bad-functions=map,filter,apply,input
@@ -246,16 +243,6 @@ int-import-graph=
 
 
 [CLASSES]
-
-# List of interface methods to ignore, separated by a comma. This is used for
-# instance to not check methods defines in Zope's Interface base class.
-ignore-iface-methods=isImplementedBy,deferred,extends,names,namesAndDescriptions,queryDescriptionFor,getBases,getDescriptionFor,getDoc,getName,getTaggedValue,getTaggedValueTags,isEqualOrExtendedBy,setTaggedValue,isImplementedByInstancesOf,adaptWith,is_implemented_by
-
-# List of method names used to declare (i.e. assign) instance attributes.
-defining-attr-methods=__init__,__new__,setUp
-
-# List of valid names for the first argument in a class method.
-valid-classmethod-first-arg=cls
 
 
 [EXCEPTIONS]
