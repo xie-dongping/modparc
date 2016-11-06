@@ -48,7 +48,7 @@ def short_class_definition(tokens, state):
               + (base_prefix + name + maybe(array_subscript)
                  + maybe(class_modification) + comment
                  | keyword('enumeration') + op('(') +
-                  (maybe(enum_list) | op(":")) + op(')') + comment))
+                 (maybe(enum_list) | op(":")) + op(')') + comment))
     return (parser >> ShortClassDefinition).run(tokens, state)
 
 component_declaration1 = declaration + comment >> ComponentDeclaration1
@@ -63,7 +63,7 @@ element_replaceable = (keyword("replaceable") + (short_class_definition
 element_redeclaration = (keyword("redeclare") + maybe(keyword("each"))
                          + maybe(keyword("final")) +
                          ((short_class_definition | component_clause1
-                          | element_replaceable))) >> ElementRedeclaration
+                           | element_replaceable))) >> ElementRedeclaration
 
 element_modification = (name + maybe(modification) + string_comment
                         >> ElementModification)

@@ -103,22 +103,23 @@ def class_prefixes(tokens, state):
     kw = keyword
     function_prefix = (maybe(kw("pure") | kw("impure")) + km("operator")
                        + kw("function"))
-    parser = (km("partial") + ((kw("class") | kw("model") |
-              km("operator") + kw("record") |
-              kw("block") |
-              (km("expandable") + kw("connector")) |
-              kw("type") | kw("package") |
-              function_prefix | kw("operator"))))
+    parser = (km("partial")
+              + ((kw("class") | kw("model") |
+                  km("operator") + kw("record") |
+                  kw("block") |
+                  (km("expandable") + kw("connector")) |
+                  kw("type") | kw("package") |
+                  function_prefix | kw("operator"))))
 
     return (parser >> ClassPrefixes).run(tokens, state)
 
 enumeration_literal = token_type("ident") + comment >> EnumerationLiteral
 
 enum_list = enumeration_literal + maybe(many(op(",") +
-                                        enumeration_literal)) >> EnumList
+                                             enumeration_literal)) >> EnumList
 
 import_list = (token_type("ident") + maybe(many(op(",") +
-                                           token_type("ident")))
+                                                token_type("ident")))
                >> ImportList)
 
 import_clause = (keyword('import') +

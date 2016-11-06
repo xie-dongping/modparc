@@ -7,10 +7,11 @@ The main utilities module for the parser implementation, with tokenizer
 and parser creation functions.
 """
 
+from re import MULTILINE
+
 from funcparserlib.lexer import Token
 from funcparserlib.parser import some, a, maybe
 import funcparserlib.lexer
-from re import MULTILINE
 
 from modparc.specification import KEYWORDS
 
