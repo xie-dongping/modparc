@@ -2,9 +2,19 @@
 # This file will be regenerated if you run travis_pypi_setup.py
 
 language: python
-python: 3.5
+python:
+  - "2.7"
+  - "3.3"
+  - "3.4"
+  - "3.5"
+  - "3.5-dev"
+  - "3.6-dev"
+  - "nightly" # currently points to 3.7-dev
 
 env:
+  - TOXENV=pynightly
+  - TOXENV=py36dev
+  - TOXENV=py35dev
   - TOXENV=py35
   - TOXENV=py34
   - TOXENV=py33
