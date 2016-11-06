@@ -1,15 +1,26 @@
 # -*- coding: utf-8 -*-
-# pylint: disable=missing-docstring
+"""
+component_clause
+----------------------------------
+
+Parser definition for funcparserlib. The parsers that need forward declaration
+are defined as function annotated by the `Parser` decorator.
+
+The definitions are specified in the Appendix B.2.4 of the Modelica
+Specification 3.3.
+"""
 
 from funcparserlib.parser import (many, maybe, Parser)
-from .syntax import keyword, op, token_type
 
-from .expressions import name, comment, expression, array_subscript
+# pylint: disable=no-name-in-module, missing-docstring
+from modparc.syntax import keyword, op, token_type
+from modparc.syntax.expressions import (name, comment, expression,
+                                        array_subscript)
+from modparc.syntax.syntax_elements import (TypePrefix, TypeSpecifier,
+                                            ConditionAttribute, Declaration,
+                                            ComponentDeclaration,
+                                            ComponentList, ComponentClause)
 
-# pylint: disable=no-name-in-module
-from .syntax_elements import (TypePrefix, TypeSpecifier, ConditionAttribute,
-                              Declaration, ComponentDeclaration, ComponentList,
-                              ComponentClause)
 # pylint: enable=no-name-in-module
 
 kw = keyword

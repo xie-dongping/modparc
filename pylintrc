@@ -38,7 +38,7 @@ disable=
 # W0142: Used * or ** magic
 # W0141: Used builtin function 'map'
 # I0011: 36,0: Locally disabling E1101
-    C0103
+    C0103, locally-disabled
 
 
 [REPORTS]
@@ -56,7 +56,7 @@ include-ids=yes
 files-output=no
 
 # Tells whether to display a full report or only the messages
-reports=yes
+reports=no
 
 # Python expression which should return a note less than 10 (10 is the highest
 # note). You have access to the variables errors warning, statement which

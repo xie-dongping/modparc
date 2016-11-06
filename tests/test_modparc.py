@@ -11,8 +11,8 @@ Tests for `modparc` module.
 
 from funcparserlib.parser import skip, finished
 
-from modparc.syntax import tokenize
 import modparc
+from modparc.syntax import tokenize
 
 
 def verify_parsed_result(source_code, parser,
@@ -38,7 +38,7 @@ def test_simple_expression():
     source_code = "1:n"
     subelement_code = ['1', 'n']
     subelement_type = 'LogicalExpression'
-    verify_parsed_result(source_code, modparc.expressions.expression,
+    verify_parsed_result(source_code, modparc.syntax.expressions.expression,
                          subelement_type, subelement_code)
 
 
@@ -46,7 +46,7 @@ def test_expression1():
     source_code = r'x*(alpha-beta*y)'
     subelement_code = ['x * ( alpha - beta * y )', 'alpha - beta * y']
     subelement_type = 'Expression'
-    verify_parsed_result(source_code, modparc.expressions.expression,
+    verify_parsed_result(source_code, modparc.syntax.expressions.expression,
                          subelement_type, subelement_code)
 
 
@@ -55,7 +55,7 @@ def test_expression2():
     subelement_code = ['k1 * ( phi2 - phi1 ) + d1 * der ( phi2 - phi1 )',
                        'phi2 - phi1', 'phi2 - phi1']
     subelement_type = 'Expression'
-    verify_parsed_result(source_code, modparc.expressions.expression,
+    verify_parsed_result(source_code, modparc.syntax.expressions.expression,
                          subelement_type, subelement_code)
 
 
@@ -63,7 +63,7 @@ def test_expression_if1():
     source_code = r'if done then 0 else -9.81'
     subelement_code = ['if done then 0 else - 9.81', 'done', '0', '- 9.81']
     subelement_type = 'Expression'
-    verify_parsed_result(source_code, modparc.expressions.expression,
+    verify_parsed_result(source_code, modparc.syntax.expressions.expression,
                          subelement_type, subelement_code)
 
 
@@ -75,7 +75,7 @@ def test_expression_if2():
                        'if h < - eps then 0 else pre ( v )', 'h < - eps',
                        '0', 'pre ( v )', 'v']
     subelement_type = 'Expression'
-    verify_parsed_result(source_code, modparc.expressions.expression,
+    verify_parsed_result(source_code, modparc.syntax.expressions.expression,
                          subelement_type, subelement_code)
 
 
@@ -95,7 +95,8 @@ def test_function_arguments():
                        'fillPattern = FillPattern . Solid',
                        'textString = "%name"']
     subelement_type = 'NamedArgument'
-    verify_parsed_result(source_code, modparc.expressions.function_arguments,
+    verify_parsed_result(source_code,
+                         modparc.syntax.expressions.function_arguments,
                          subelement_type, subelement_code)
 
 
@@ -104,7 +105,7 @@ def test_simple_equation():
     subelement_code = ['v', 'if done then 0 else - 9.81', 'done',
                        '0', '- 9.81', ]
     subelement_type = 'Expression'
-    verify_parsed_result(source_code, modparc.equations.equation,
+    verify_parsed_result(source_code, modparc.syntax.equations.equation,
                          subelement_type, subelement_code)
 
 
@@ -120,5 +121,5 @@ def test_if_equation():
     subelement_code = ['population = initial_population',
                        'der ( population ) = 0']
     subelement_type = 'Equation'
-    verify_parsed_result(source_code, modparc.equations.if_equation,
+    verify_parsed_result(source_code, modparc.syntax.equations.if_equation,
                          subelement_type, subelement_code)

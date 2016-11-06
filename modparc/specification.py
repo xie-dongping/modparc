@@ -1,4 +1,10 @@
 # -*- coding: utf-8 -*-
+"""
+specification
+----------------------------------
+
+Constants used in the library according to the specification
+"""
 
 KEYWORDS = ['algorithm', 'and', 'annotation', 'assert', 'block',
             'break', 'class', 'connect', 'connector', 'constant',
