@@ -27,8 +27,6 @@ modparc is a Modelica parser in Python based on parser combinator.
 
 .. contents::
 
-.. section-numbering::
-
 Quickstart
 --------
 
