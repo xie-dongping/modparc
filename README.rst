@@ -22,6 +22,7 @@ modparc is a Modelica parser in Python based on parser combinator.
 
 
 * Free software: GNU General Public License v3
+* Source code: https://github.com/xie-dongping/modparc.
 * Documentation: https://modparc.readthedocs.io.
 
 .. contents::
