@@ -42,11 +42,9 @@ To parse a Modelica source file `"your_modelica_file.mo"`:
 .. code-block:: python
 
     import modparc
-    with open("your_modelica_file.mo", 'r') as f:
-        modelica_source_code = f.read()
-        model_definition = modparc.parse(modelica_source_code)
+    model_definition = modparc.parse_file("your_modelica_file.mo")
 
-To use the `model_definition` instance:
+To list all the equations in the `model_definition` instance:
 
 .. code-block:: python
 
@@ -54,27 +52,12 @@ To use the `model_definition` instance:
     for equation in all_equations:
         print(equation.code())  # The code of the equation as string
 
-One could also parse a certain syntax element in Modelica:
+To get the name of the model loaded:
 
 .. code-block:: python
 
-    import modparc
-    from modparc.syntax import tokenize
-    source_code = """
-                  if init==InitializationOptions.FixedPopulation then
-                    population = initial_population;
-                  elseif init==InitializationOptions.SteadyState then
-                    der(population) = 0;
-                  else
-                  end if
-                  """
-    tokens_list = tokenize(source_code)
-    if_equation_element = modparc.syntax.equations.if_equation(tokens_list)
-    sub_equations = if_equation_element.search('Equation')
-    for equation in sub_equations:
-        print(equation.code())  # The code of the equation as string
-
-
+    print(model_definition.name())  # get the name of the stored class
+    print(model_definition.class_type())  # get the type of the class
 
 Features
 --------

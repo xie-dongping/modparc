@@ -13,7 +13,7 @@ To use modparc in a project:
         modelica_source_code = f.read()
         model_definition = modparc.parse(modelica_source_code)
 
-To use the `model_definition` instance:
+To list all the equations in the `model_definition` instance:
 
 .. code-block:: python
    :emphasize-lines: 1,3
@@ -44,4 +44,5 @@ One could also parse a certain syntax element in Modelica:
     sub_equations = if_equation_element.search('Equation')
     for equation in sub_equations:
         print(equation.code())  # The code of the equation as string
+
 
