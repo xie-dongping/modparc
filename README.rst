@@ -28,7 +28,7 @@ modparc is a Modelica parser in Python based on parser combinator.
 .. contents::
 
 Quickstart
---------
+----------
 
 Install the package from PyPI:
 
@@ -83,17 +83,15 @@ Features
 * Search element of a certain class
 
 Known Issues
---------
+------------
 
 * Handling tokenization of Q-IDENT and comments, which comes first?
-* Assertion syntax not defined in modelica specification
-* Recursion limit (since no tail recursion optimization)
-* Test case for long vector literals
+* Assertion syntax not defined in Modelica specification
 * Default recursion depth is not enough for long vector literals
 * Cyclic import is neccessary for the Modelica syntax definition
 
 Credits
----------
+-------
 
 This package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypackage`_ project template.
 
