@@ -58,6 +58,13 @@ def test_expression2():
     verify_parsed_result(source_code, modparc.syntax.expressions.expression,
                          subelement_type, subelement_code)
 
+def test_unicode_expression():
+    source_code = u"x*('阿尔法'-beta*y)"
+    subelement_code = [u"x * ( '阿尔法' - beta * y )", u"'阿尔法' - beta * y"]
+    subelement_type = 'Expression'
+    verify_parsed_result(source_code, modparc.syntax.expressions.expression,
+                         subelement_type, subelement_code)
+
 
 def test_expression_if1():
     source_code = r'if done then 0 else -9.81'
