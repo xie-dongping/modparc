@@ -35,6 +35,17 @@ class SyntaxElement(object):
     def __repr__(self):
         return self.__str__()
 
+    def original_code(self):
+        """
+        Return the token arranged by original string with only space and
+        newline, and leave out all trailing newline and spaces
+
+        Intended for roundtripping
+
+        :return: string contained in the instance
+        """
+        return SyntaxElement._create_string(self.search('Token'))
+
     def code(self):
         """
         Create a predefined representation of all the tokens in the instance

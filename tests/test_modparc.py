@@ -127,7 +127,20 @@ def test_if_equation():
                   end if
                   """
     subelement_code = ['population = initial_population',
-                       'der ( population ) = 0']
+                       'der(population) = 0']
     subelement_type = 'Equation'
     verify_parsed_result(source_code, modparc.syntax.equations.if_equation,
                          subelement_type, subelement_code)
+
+def test_roundtripping():
+    source_code = """
+                  if init==InitializationOptions.FixedPopulation then
+                    population = initial_population;
+                  elseif init==InitializationOptions.SteadyState then
+                    der(population) = 0;
+                  else
+                  end if"""
+    parser = modparc.syntax.equations.if_equation
+    syntax_element = parser.parse(tokenize(source_code))
+
+    assert syntax_element.original_code() == source_code
