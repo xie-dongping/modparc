@@ -79,7 +79,7 @@ def tokenize(source_code):
         ('comment', (r'/\*(.|[\r\n])*?\*/', MULTILINE)),
         ('ident', (r"'" + r'([a-zA-Z_0-9' +
                    r'!#%&()*+,\-\./:;<>=?@\[\]\^{}|~ ' +
-                   r'\"\?\\\a\b\f\n\r\t\v]|[^\x00-\x7F])*' + r"'",)),  # TODO: Unicode
+                   r'\"\?\\\a\b\f\n\r\t\v]|[^\x00-\x7F])*' + r"'",)),
         ('comment', (r'//.*',)),
         ('newline', (r'[\r\n]+',)),
         ('whitespace', (r'[ \t\r\n]+',)),
