@@ -132,6 +132,37 @@ class SyntaxElement(object):
             for el in syntax_element:
                 SyntaxElement.find(el, type_name, result)
 
+
+class _Definition(SyntaxElement):
+    """
+    Base class for definition class, to support additional functionalities
+    """
+
+    def name(self):
+        """
+        :return: the name of the definition
+        """
+        token_name = self.search('ClassSpecifier')[0].elements[0]
+        assert token_name.type == 'ident'
+
+        return token_name.value
+
+    def prefix(self):
+        """
+        :return: the prefix of the definition
+        """
+        class_prefix = self.search('ClassPrefixes')[0]
+
+        return class_prefix.code()
+
+    def class_type(self):
+        """
+        :return: the type of the definition
+        """
+        class_prefix = self.search('ClassPrefixes')[0]
+
+        return class_prefix.elements[-1].value
+
 classes = ['Expression', 'SimpleExpression', 'LogicalExpression',
            'LogicalTerm', 'LogicalFactor', 'Relation',
            'ArithmeticExpression', 'Term', 'Factor', 'Primary', 'RelOp',
@@ -140,7 +171,7 @@ classes = ['Expression', 'SimpleExpression', 'LogicalExpression',
            'ExpressionList', 'OutputExpressionList', 'Subscript',
            'ArraySubscript', 'ComponentReference', 'StringComment',
            'Annotation', 'Comment', "LanguageSpecification", "BasePrefix",
-           "ExternalFunctionCall", "ClassDefinition", "Element", "ElementList",
+           "ExternalFunctionCall", "Element", "ElementList",
            "Composition", "ClassSpecifier", "ClassPrefixes",
            "EnumerationLiteral", "EnumList", "ImportList", "ImportClause",
            "TypePrefix", "TypeSpecifier", "ConditionAttribute", "Declaration",
@@ -153,9 +184,13 @@ classes = ['Expression', 'SimpleExpression', 'LogicalExpression',
            "ComponentDeclaration1", "ComponentClause1", "ElementReplaceable",
            "ElementRedeclaration", "ElementModification",
            "ElementModificationOrReplaceable", "Argument", "ArgumentList",
-           "ClassModification", "StoredDefinition", "Assertion"]
+           "ClassModification", "Assertion"]
+definition_classes = ["ClassDefinition", "StoredDefinition"]
 
 variables = globals()
 
 for class_name in classes:
     variables[class_name] = type(class_name, (SyntaxElement,), {})
+
+for class_name in definition_classes:
+    variables[class_name] = type(class_name, (_Definition,), {})

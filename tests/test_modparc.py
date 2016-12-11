@@ -132,6 +132,7 @@ def test_if_equation():
     verify_parsed_result(source_code, modparc.syntax.equations.if_equation,
                          subelement_type, subelement_code)
 
+
 def test_roundtripping():
     source_code = """
                   if init==InitializationOptions.FixedPopulation then
@@ -144,3 +145,29 @@ def test_roundtripping():
     syntax_element = parser.parse(tokenize(source_code))
 
     assert syntax_element.original_code() == source_code
+
+
+def test_get_name():
+    source_code = """
+                  within ModelicaByExample.BasicEquations.SimpleExample;
+                  model FirstOrder
+                    Real x;
+                  equation
+                    der(x) = 1-x;
+                  end FirstOrder;
+                  """
+    defintion = modparc.parse(source_code)
+    assert defintion.name() == "FirstOrder"
+
+
+def test_get_type():
+    source_code = """
+                  within ModelicaByExample.BasicEquations.SimpleExample;
+                  model FirstOrder
+                    Real x;
+                  equation
+                    der(x) = 1-x;
+                  end FirstOrder;
+                  """
+    defintion = modparc.parse(source_code)
+    assert defintion.class_type() == "model"
