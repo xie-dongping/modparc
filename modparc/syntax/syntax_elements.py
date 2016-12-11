@@ -41,7 +41,54 @@ class SyntaxElement(object):
 
         :return: formatted tokens contained in the instance
         """
-        return " ".join([tok.value for tok in self.search('Token')])
+        ROW = 0
+        COLUMN = 1
+
+        tokens = self.search('Token')
+        min_row_token = min(tokens, key=lambda t: t.start[ROW])
+        min_row_position = min_row_token.start[ROW]
+        min_column_token = min(tokens, key=lambda t: t.start[COLUMN])
+        min_column_position = min_column_token.start[COLUMN]
+        row_offset = 1 - min_row_position  # nominal start position is 1
+        column_offset = 1 - min_column_position  # nominal start position is 1
+
+        return SyntaxElement._create_string(tokens, row_offset, column_offset)
+
+    @staticmethod
+    def _create_string(tokens, row_offset=0, column_offset=0):
+        """
+        Return the token arranged by original string with only space and
+        newline, and leave out all trailing newline and spaces with a
+        predefined offset.
+
+        :return: string created by the tokens and offset
+        """
+        def append_line(old_string, start_position, value):
+            """
+            :return: appended string at predefined positions
+            """
+            assert start_position >= len(old_string)
+            no_of_missing_char = start_position - len(old_string) - 1
+            old_string += ' ' * no_of_missing_char
+            old_string += value
+            return old_string
+        ROW = 0
+        COLUMN = 1
+        return_results = []
+        for token in tokens:
+            token_row = token.start[ROW] + row_offset
+            token_column = token.start[COLUMN] + column_offset
+            if token_row > len(return_results):
+                no_of_missing_lines = token_row - len(return_results)
+                return_results.extend([''] * (no_of_missing_lines - 1))
+                new_line = append_line('', token_column, token.value)
+                return_results.append(new_line)
+            else:
+                old_line = return_results[token_row - 1]
+                new_line = append_line(old_line, token_column, token.value)
+                return_results[token_row - 1] = new_line
+
+        return "\n".join(return_results)
 
     def search(self, type_name):
         """

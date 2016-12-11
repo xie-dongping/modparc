@@ -44,7 +44,7 @@ def test_simple_expression():
 
 def test_expression1():
     source_code = r'x*(alpha-beta*y)'
-    subelement_code = ['x * ( alpha - beta * y )', 'alpha - beta * y']
+    subelement_code = ['x*(alpha-beta*y)', 'alpha-beta*y']
     subelement_type = 'Expression'
     verify_parsed_result(source_code, modparc.syntax.expressions.expression,
                          subelement_type, subelement_code)
@@ -52,15 +52,16 @@ def test_expression1():
 
 def test_expression2():
     source_code = r'k1*(phi2-phi1)+d1*der(phi2-phi1)'
-    subelement_code = ['k1 * ( phi2 - phi1 ) + d1 * der ( phi2 - phi1 )',
-                       'phi2 - phi1', 'phi2 - phi1']
+    subelement_code = ['k1*(phi2-phi1)+d1*der(phi2-phi1)',
+                       'phi2-phi1', 'phi2-phi1']
     subelement_type = 'Expression'
     verify_parsed_result(source_code, modparc.syntax.expressions.expression,
                          subelement_type, subelement_code)
 
+
 def test_unicode_expression():
     source_code = u"x*('阿尔法'-beta*y)"
-    subelement_code = [u"x * ( '阿尔法' - beta * y )", u"'阿尔法' - beta * y"]
+    subelement_code = [u"x*('阿尔法'-beta*y)", u"'阿尔法'-beta*y"]
     subelement_type = 'Expression'
     verify_parsed_result(source_code, modparc.syntax.expressions.expression,
                          subelement_type, subelement_code)
@@ -68,7 +69,7 @@ def test_unicode_expression():
 
 def test_expression_if1():
     source_code = r'if done then 0 else -9.81'
-    subelement_code = ['if done then 0 else - 9.81', 'done', '0', '- 9.81']
+    subelement_code = ['if done then 0 else -9.81', 'done', '0', '-9.81']
     subelement_type = 'Expression'
     verify_parsed_result(source_code, modparc.syntax.expressions.expression,
                          subelement_type, subelement_code)
@@ -76,11 +77,11 @@ def test_expression_if1():
 
 def test_expression_if2():
     source_code = r'reinit(v, -e*(if h<-eps then 0 else pre(v)))'
-    subelement_code = ['reinit ( v , - e * ( if h < - eps '
-                       + 'then 0 else pre ( v ) ) )',
-                       'v', '- e * ( if h < - eps then 0 else pre ( v ) )',
-                       'if h < - eps then 0 else pre ( v )', 'h < - eps',
-                       '0', 'pre ( v )', 'v']
+    subelement_code = ['reinit(v, -e*(if h<-eps '
+                       + 'then 0 else pre(v)))',
+                       'v', '-e*(if h<-eps then 0 else pre(v))',
+                       'if h<-eps then 0 else pre(v)', 'h<-eps',
+                       '0', 'pre(v)', 'v']
     subelement_type = 'Expression'
     verify_parsed_result(source_code, modparc.syntax.expressions.expression,
                          subelement_type, subelement_code)
@@ -96,11 +97,11 @@ def test_function_arguments():
                     fillPattern=FillPattern.Solid,
                     textString="%name")
                   """
-    subelement_code = ['extent = { { - 100 , - 40 } , { 100 , - 80 } }',
-                       'lineColor = { 0 , 0 , 0 }',
-                       'fillColor = { 255 , 255 , 255 }',
-                       'fillPattern = FillPattern . Solid',
-                       'textString = "%name"']
+    subelement_code = ['extent={{-100,-40},{100,-80}}',
+                       'lineColor={0,0,0}',
+                       'fillColor={255,255,255}',
+                       'fillPattern=FillPattern.Solid',
+                       'textString="%name"']
     subelement_type = 'NamedArgument'
     verify_parsed_result(source_code,
                          modparc.syntax.expressions.function_arguments,
@@ -109,8 +110,8 @@ def test_function_arguments():
 
 def test_simple_equation():
     source_code = r'der(v) = if done then 0 else -9.81'
-    subelement_code = ['v', 'if done then 0 else - 9.81', 'done',
-                       '0', '- 9.81', ]
+    subelement_code = ['v', 'if done then 0 else -9.81', 'done',
+                       '0', '-9.81', ]
     subelement_type = 'Expression'
     verify_parsed_result(source_code, modparc.syntax.equations.equation,
                          subelement_type, subelement_code)
