@@ -82,5 +82,6 @@ The test cases used code from the `ModelicaByExample library (MIT License by Mic
 
 .. _Cookiecutter: https://github.com/audreyr/cookiecutter
 .. _`audreyr/cookiecutter-pypackage`: https://github.com/audreyr/cookiecutter-pypackage
-.. _`ModelicaByExample library (MIT License by Michael Tiller)`: https://github.com/xogeny/ModelicaBook
+.. _`ModelicaByExample`: https://github.com/xogeny/ModelicaBook
+
 
