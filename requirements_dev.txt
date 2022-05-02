@@ -9,4 +9,4 @@ Sphinx==1.6.3
 cryptography==1.9
 PyYAML==3.12
 pytest==4.1.1
-funcparserlib==0.3.6
+funcparserlib==1.0.0
